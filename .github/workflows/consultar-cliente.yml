@@ -1,0 +1,31 @@
+name: Consulta de Cliente
+
+on:
+  issue_comment:
+    types:
+      - created
+    labels:
+      - consulta-cliente
+
+jobs:
+  notificar-consulta:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Enviar notificación a Slack
+        uses: slackapi/slack-github-action@v1.23.0
+        with:
+          payload: |
+            {
+              "text": "Consulta de cliente recibida 📄",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "Consulta de cliente recibida 📄\n*Issue:* <${{ github.event.issue.html_url }}|#${{ github.event.issue.number }}>\n*Título:* ${{ github.event.issue.title }}\n*Comentario:* ${{ github.event.comment.body }}"
+                  }
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
