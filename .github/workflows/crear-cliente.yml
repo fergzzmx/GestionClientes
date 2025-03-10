@@ -1,0 +1,31 @@
+name: Creación de Nuevo Cliente
+
+on:
+  issues:
+    types:
+      - opened
+    labels:
+      - nuevo-cliente
+
+jobs:
+  notificar-creacion:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Enviar notificación a Slack
+        uses: slackapi/slack-github-action@v1.23.0
+        with:
+          payload: |
+            {
+              "text": "¡Nuevo cliente creado! 🎉",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "¡Nuevo cliente creado! 🎉\n*Issue:* <${{ github.event.issue.html_url }}|#${{ github.event.issue.number }}>\n*Título:* ${{ github.event.issue.title }}\n*Descripción:* ${{ github.event.issue.body }}"
+                  }
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
