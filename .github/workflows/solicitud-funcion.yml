@@ -1,0 +1,31 @@
+name: Solicitud de Nueva Función
+
+on:
+  issues:
+    types:
+      - opened
+    labels:
+      - nueva-funcion
+
+jobs:
+  notificar-funcion:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Enviar notificación a Slack
+        uses: slackapi/slack-github-action@v1.23.0
+        with:
+          payload: |
+            {
+              "text": "¡Nueva solicitud de función! 🚀",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "¡Nueva solicitud de función! 🚀\n*Issue:* <${{ github.event.issue.html_url }}|#${{ github.event.issue.number }}>\n*Título:* ${{ github.event.issue.title }}\n*Descripción:* ${{ github.event.issue.body }}"
+                  }
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
