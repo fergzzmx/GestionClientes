@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+om flask import Flask, render_template, request, redirect, url_for
 import os
 
 app = Flask(__name__)
@@ -7,7 +7,7 @@ app = Flask(__name__)
 CLIENTES_DIR = 'clientes'
 
 @app.route('/')
-def index():
+#def index():
     # Listar los archivos de clientes
     clientes = os.listdir(CLIENTES_DIR)
     return render_template('index.html', clientes=clientes)
@@ -50,4 +50,4 @@ def crear_cliente():
         return render_template('crear_cliente.html')
 
 if __name__ == '__main__':
-    app.run(debug=False)
+    app.run(host='0.0.0.0', port=5000)
